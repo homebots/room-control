@@ -3,7 +3,7 @@ import { useConnector } from "./useConnector.js";
 import { Device, LightDevice, SwitchDevice } from "./types.js";
 
 const connector = useConnector();
-const { set, get } = useState();
+const { set, get, current } = useState();
 const credentials = {};
 
 async function fetchAll(type) {
@@ -23,29 +23,53 @@ export function useStore() {
   const actions = {
     connect(o) {
       Object.assign(credentials, o);
+      (window as any).state = {
+        get current() {
+          return current.value;
+        },
+        set,
+        get,
+      };
     },
 
     async init() {
       await actions.refreshAll();
     },
 
-    async toggleSwitch(id: string) {
+    async toggleSwitch(id: string, value?: boolean) {
       const device: SwitchDevice = get(deviceKey(id));
-      const value = !device.isOn;
 
-      if (device) {
-        await connector.toggleSwitch(device.id, value);
-        await set(deviceKey(id), { ...device, isOn: value });
+      if (value === undefined) {
+        value = !device.isOn;
       }
+
+      await connector.toggleSwitch(device.id, value);
+      await set(deviceKey(id), { ...device, isOn: value });
     },
 
-    async toggleLamp(id: string) {
+    async toggleLamp(id: string, value?: boolean) {
       const device: LightDevice = get(deviceKey(id));
-      const value = !device.isOn;
 
-      if (device) {
-        await connector.switchLed(device.id, value);
-        await set(deviceKey(id), { ...device, isOn: value });
+      if (value === undefined) {
+        value = !device.isOn;
+      }
+
+      await connector.switchLed(device.id, value);
+      await set(deviceKey(id), { ...device, isOn: value });
+    },
+
+    async allLightsOff() {
+      const devices = get("devices").filter((d) => d.type === "light");
+
+      for (const dev of devices) {
+        actions.toggleLamp(dev.id, false);
+      }
+    },
+    async allSwitchesOff() {
+      const devices = get("devices").filter((d) => d.type === "light");
+
+      for (const dev of devices) {
+        actions.toggleSwitch(dev.id, false);
       }
     },
 
@@ -75,11 +99,13 @@ export function useStore() {
       // await actions.refreshDevices();
       // await actions.refreshLayouts();
       // await actions.refreshRooms();
-      // await actions.refreshDeviceStates()
+      // await actions.refreshDeviceStates();
     },
 
     async refreshDeviceStates() {
-      for (const dev of get("devices")) {
+      const devices = get("devices");
+
+      for (const dev of devices) {
         await actions.refreshDevice(dev);
       }
     },

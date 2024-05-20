@@ -16,6 +16,15 @@ export interface BaseDevice {
 export interface LightDevice extends BaseDevice {
   type: "light";
   isOn: boolean;
+  countDown: number;
+  workMode: string;
+  brightness: number;
+  temperature: number;
+  color: {
+    h: number;
+    s: number;
+    v: number;
+  };
 }
 
 export interface SwitchDevice extends BaseDevice {
