@@ -63,7 +63,7 @@ export function useStore() {
 
       for (const dev of devices) {
         if (dev.isOn) {
-          actions.toggleLamp(dev.id, false);
+          await actions.toggleLamp(dev.id, false);
         }
       }
     },
@@ -73,7 +73,7 @@ export function useStore() {
 
       for (const dev of devices) {
         if (dev.isOn) {
-          actions.toggleSwitch(dev.id, false);
+          await actions.toggleSwitch(dev.id, false);
         }
       }
     },
@@ -83,7 +83,7 @@ export function useStore() {
     },
 
     getAllOfType<T extends Device>(type: T["type"]): T[] {
-      return get("devices").filter((d) => d.type === type);
+      return get("devices").filter((d) => d.type === type).map(d => actions.getDevice(d.id));
     },
 
     async refreshDevice(device: Device) {
