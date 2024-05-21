@@ -50,7 +50,7 @@
               class="toggle"
               :class="(device.isOn && 'toggle-on') || 'toggle-off'"
             >
-              <label class="ml-4 whitespace-pre">{{ device.name }}</label>
+              <label class="whitespace-pre">{{ device.name }}</label>
             </button>
           </div>
         </div>
@@ -95,7 +95,7 @@
               class="toggle"
               :class="(device.isOn && 'toggle-on') || 'toggle-off'"
             >
-              <label class="ml-4 whitespace-pre">{{ device.name }}</label>
+              <label class="whitespace-pre">{{ device.name }}</label>
             </button>
           </div>
         </div>
