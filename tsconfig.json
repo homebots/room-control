@@ -1,0 +1,7 @@
+{
+  "extends": "@cloud-cli/typescript-config",
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "lib": ["DOM"]
+  }
+}

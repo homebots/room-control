@@ -4,7 +4,7 @@ import { Device, LightDevice, SwitchDevice } from "./types.js";
 
 const connector = useConnector();
 const { set, get, current } = useState();
-const credentials = {};
+const credentials: Record<string, string> = {};
 
 async function fetchAll(type) {
   const url = `https://store.homebots.io/${credentials.storeId}/${type}`;
@@ -37,7 +37,7 @@ export function useStore() {
     },
 
     async toggleSwitch(id: string, value?: boolean) {
-      const device: SwitchDevice = get(deviceKey(id));
+      const device = actions.getDevice<SwitchDevice>(id);
 
       if (value === undefined) {
         value = !device.isOn;
@@ -48,7 +48,7 @@ export function useStore() {
     },
 
     async toggleLamp(id: string, value?: boolean) {
-      const device: LightDevice = get(deviceKey(id));
+      const device = actions.getDevice<LightDevice>(id);
 
       if (value === undefined) {
         value = !device.isOn;
@@ -59,22 +59,27 @@ export function useStore() {
     },
 
     async allLightsOff() {
-      const devices = get("devices").filter((d) => d.type === "light");
+      const devices = actions.getAllOfType<LightDevice>("light");
 
       for (const dev of devices) {
         actions.toggleLamp(dev.id, false);
       }
     },
+
     async allSwitchesOff() {
-      const devices = get("devices").filter((d) => d.type === "light");
+      const devices = actions.getAllOfType<SwitchDevice>("switch");
 
       for (const dev of devices) {
         actions.toggleSwitch(dev.id, false);
       }
     },
 
-    getDevice(id: string) {
+    getDevice<T=Device>(id: string): T {
       return get(deviceKey(id));
+    },
+
+    getAllOfType<T extends Device>(type: T["type"]): T[] {
+      return get("devices").filter((d) => d.type === type);
     },
 
     async refreshDevice(device: Device) {

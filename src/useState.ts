@@ -11,7 +11,7 @@ async function connect(stateId: string) {
   current.value = state.current;
 
   state.addEventListener("change", (c) => {
-    current.value = c.detail;
+    current.value = state.current;
     events.dispatchEvent(new CustomEvent("change", { detail: c.detail }));
   });
 
@@ -24,19 +24,17 @@ export function useState() {
     current,
     connect,
 
-    select(p: string) {
+    select(p) {
       return computed(() => current.value[p]);
     },
 
-    get(p: string) {
+    get(p) {
       return state.current[p];
     },
-
-    set<T>(p: string, v: T) {
+    set(p, v) {
       return state.set(p, v);
     },
-
-    remove(p: string) {
+    remove(p) {
       return state.remove(p);
     },
   };

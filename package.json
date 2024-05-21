@@ -4,14 +4,19 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "ci": "npm i && npm run build && npm run typecheck",
+    "build": "vite build",
+    "typecheck": "vue-tsc --noEmit"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@cloud-cli/typescript-config": "^1.0.1",
+    "@types/node": "^20.12.12",
     "@vitejs/plugin-vue": "^5.0.4",
-    "vite": "^5.2.11"
+    "vite": "^5.2.11",
+    "vue-tsc": "^2.0.19"
   },
   "dependencies": {
     "vue": "^3.4.27"
