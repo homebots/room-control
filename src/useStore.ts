@@ -62,7 +62,9 @@ export function useStore() {
       const devices = actions.getAllOfType<LightDevice>("light");
 
       for (const dev of devices) {
-        actions.toggleLamp(dev.id, false);
+        if (dev.isOn) {
+          actions.toggleLamp(dev.id, false);
+        }
       }
     },
 
@@ -70,11 +72,13 @@ export function useStore() {
       const devices = actions.getAllOfType<SwitchDevice>("switch");
 
       for (const dev of devices) {
-        actions.toggleSwitch(dev.id, false);
+        if (dev.isOn) {
+          actions.toggleSwitch(dev.id, false);
+        }
       }
     },
 
-    getDevice<T=Device>(id: string): T {
+    getDevice<T = Device>(id: string): T {
       return get(deviceKey(id));
     },
 
