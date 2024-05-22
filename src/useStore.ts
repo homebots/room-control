@@ -105,10 +105,10 @@ export function useStore() {
     },
 
     async refreshAll() {
-      // await actions.refreshDevices();
-      // await actions.refreshLayouts();
-      // await actions.refreshRooms();
-      // await actions.refreshDeviceStates();
+      await actions.refreshDevices();
+      await actions.refreshLayouts();
+      await actions.refreshRooms();
+      await actions.refreshDeviceStates();
     },
 
     async refreshDeviceStates() {
