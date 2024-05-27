@@ -3,18 +3,13 @@ export interface StatusEntry {
   value: any;
 }
 
-export interface Room {
-  id: string;
-  name: string;
-}
-
 export interface BaseDevice {
   id: string;
   name: string;
 }
 
 export interface LightDevice extends BaseDevice {
-  type: "light";
+  type: 'light';
   isOn: boolean;
   countDown: number;
   workMode: string;
@@ -28,23 +23,31 @@ export interface LightDevice extends BaseDevice {
 }
 
 export interface SwitchDevice extends BaseDevice {
-  type: "switch";
+  type: 'switch';
   isOn: boolean;
   countDown: number;
 }
 
 export interface CameraDevice extends BaseDevice {
-  type: "camera";
+  type: 'camera';
 }
 
 export interface SensorDevice extends BaseDevice {
-  type: "sensor";
+  type: 'sensor';
 }
 
 export type Device = LightDevice | SwitchDevice | CameraDevice | SensorDevice;
 
 export interface Layout {
   id: string;
-  room: string;
+  name: string;
   deviceIds: string[];
+}
+
+export interface State {
+  devices: Device[];
+  layouts: Layout[];
+  lastUpdate: number;
+
+  'device:id': Device;
 }
