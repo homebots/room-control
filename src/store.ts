@@ -129,7 +129,11 @@ export function useStore() {
     },
 
     async refreshDevices() {
-      return set('devices', await fetchAll('devices'));
+      const list: Device[] = await fetchAll('devices');
+      await set(
+        'devices',
+        list.sort((a, b) => (a.name > b.name ? 1 : -1)),
+      );
     },
 
     async refreshLayouts() {
