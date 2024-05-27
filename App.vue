@@ -6,8 +6,6 @@
         <span class="font-bold">{{ user.name }}</span>
       </header>
       <article class="flex-1 overflow-auto relative" v-if="state">
-        <SwitchPanel v-if="!layouts.length" :switches="switches"></SwitchPanel>
-        <LightPanel v-if="!layouts.length" :lights="lights"></LightPanel>
         <template v-if="!currentRoom"
           ><RoomControl
             v-for="room in layouts"
@@ -15,6 +13,8 @@
             :key="room.id"
             @select="currentRoom = room"
           ></RoomControl>
+          <SwitchPanel :switches="switches"></SwitchPanel>
+          <LightPanel :lights="lights"></LightPanel>
         </template>
 
         <RoomControl v-if="currentRoom" @select="currentRoom = null" :layout="currentRoom"></RoomControl>

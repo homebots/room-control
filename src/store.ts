@@ -136,21 +136,16 @@ export function useStore() {
       return set('layouts', await fetchAll('layouts'));
     },
 
-    async refreshRooms() {
-      return set('rooms', await fetchAll('rooms'));
-    },
-
     async refreshAll() {
       await actions.refreshDevices();
       await actions.refreshLayouts();
-      await actions.refreshRooms();
       await actions.refreshDeviceStates();
     },
 
     async refreshDeviceStates() {
       const lastUpdate = Number(get('lastUpdate'));
       const now = Date.now();
-      const fiveMinutes = 1000 * 60 * 660;
+      const fiveMinutes = 1000 * 60 * 60;
 
       if (now - lastUpdate < fiveMinutes) {
         return;
