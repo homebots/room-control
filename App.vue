@@ -5,7 +5,7 @@
         <img :src="user.photo" class="w-8 h-8 rounded-full mr-4" />
         <span class="font-bold">{{ user.name }}</span>
       </header>
-      <article class="flex-1 overflow-auto relative" v-if="state">
+      <article class="flex-1 overflow-auto" v-if="state">
         <template v-if="!currentRoom"
           ><RoomControl
             v-for="room in layouts"
