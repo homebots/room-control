@@ -1,6 +1,6 @@
 <template>
   <div class="device-group">
-    <div class="device-group__header">
+    <div class="header device-group__header">
       <div class="flex items-center">
         <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24" fill="currentColor">
           <path
@@ -18,7 +18,7 @@
         </svg>
       </button>
     </div>
-    <div class="device-group__body">
+    <div class="device-group__body toggle-group">
       <button
         v-for="device in switches"
         @click="store.toggleSwitch(device.id)"

@@ -1,6 +1,6 @@
 <template>
   <div class="room">
-    <button @click="onSelectRoom()" class="room__header">{{ layout.name }}</button>
+    <button @click="onSelectRoom()" class="header room__header">{{ layout.name }}</button>
     <div class="room__body">
       <div class="room__toggle-group">
         <button @click="store.toggleRoomLights(layout)" class="room__toggle" v-if="lights.length">

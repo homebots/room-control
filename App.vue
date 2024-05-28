@@ -6,13 +6,8 @@
         <span class="font-bold">{{ user.name }}</span>
       </header>
       <article class="flex-1 overflow-auto" v-if="state">
-        <template v-if="!currentRoom"
-          ><RoomControl
-            v-for="room in layouts"
-            :layout="room"
-            :key="room.id"
-            @select="currentRoom = room"
-          ></RoomControl>
+        <template v-if="!currentRoom">
+          <RoomSelector :layouts="layouts" @select="currentRoom = $event"></RoomSelector>
           <SwitchPanel :switches="switches"></SwitchPanel>
           <LightPanel :lights="lights"></LightPanel>
         </template>
@@ -32,10 +27,11 @@ import { useAuth } from './src/useAuth.js';
 import { useState } from './src/useState.js';
 import { useConnector } from './src/useConnector.js';
 import store from './src/store.js';
+import type { Layout } from './src/types';
 import LightPanel from './src/components/LightPanel.vue';
 import SwitchPanel from './src/components/SwitchPanel.vue';
 import RoomControl from './src/components/RoomControl.vue';
-import type { Layout } from './src/types';
+import RoomSelector from './src/components/RoomSelector.vue';
 
 const { user, signIn, getProperty, setProperty } = useAuth();
 const { connect: connectState, current: state } = useState();
