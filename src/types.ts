@@ -34,6 +34,8 @@ export interface CameraDevice extends BaseDevice {
 
 export interface SensorDevice extends BaseDevice {
   type: 'sensor';
+  temperature: number;
+  humidity: number;
 }
 
 export type Device = LightDevice | SwitchDevice | CameraDevice | SensorDevice;

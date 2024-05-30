@@ -20,6 +20,16 @@
           </svg>
           <span>Switches</span>
         </button>
+
+        <div class="room__toggle" v-if="thermostat">
+          <svg xmlns="http://www.w3.org/2000/svg" height="48" viewBox="0 -960 960 960" width="48" fill="currentColor">
+            <path
+              d="M480-80q-83 0-141.5-58.5T280-280q0-48 21-89.5t59-70.5v-320q0-50 35-85t85-35q50 0 85 35t35 85v320q38 29 59 70.5t21 89.5q0 83-58.5 141.5T480-80Zm-40-440h80v-40h-40v-40h40v-80h-40v-40h40v-40q0-17-11.5-28.5T480-800q-17 0-28.5 11.5T440-760v240Z"
+            />
+          </svg>
+
+          <span class="whitespace-pre">{{ thermostat.temperature }} C / {{ thermostat.humidity }} %</span>
+        </div>
       </div>
       <div class="room__switches">
         <LightPanel :lights="lights"></LightPanel>
@@ -44,6 +54,7 @@ const props = defineProps<Props>();
 const emit = defineEmits(['select']);
 const lights = computed(() => store.state && store.getLayoutDevicesOfType(props.layout, 'light'));
 const switches = computed(() => store.state && store.getLayoutDevicesOfType(props.layout, 'switch'));
+const thermostat = computed(() => store.getLayoutThermostat(props.layout));
 
 function onSelectRoom() {
   emit('select');

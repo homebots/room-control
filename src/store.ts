@@ -1,6 +1,6 @@
 import { useState } from './useState.js';
 import { useConnector } from './useConnector.js';
-import { Device, LightDevice, SwitchDevice, Layout } from './types.js';
+import { Device, LightDevice, SwitchDevice, Layout, SensorDevice } from './types.js';
 
 const connector = useConnector();
 const { set, get, current } = useState();
@@ -32,11 +32,32 @@ export function useStore() {
         },
         set,
         get,
+        actions,
       };
     },
 
     async init() {
       await actions.refreshAll();
+    },
+
+    async toggleDevice(id: string, value?: boolean) {
+      const device = actions.getDevice<SwitchDevice | LightDevice>(id);
+
+      if (value === undefined) {
+        value = !device.isOn;
+      }
+
+      switch (device.type) {
+        case 'switch':
+          await connector.toggleSwitch(device.id, value);
+          break;
+
+        case 'light':
+          await connector.switchLed(device.id, value);
+          break;
+      }
+
+      await set(deviceKey(id), { ...device, isOn: value });
     },
 
     async toggleSwitch(id: string, value?: boolean) {
@@ -125,6 +146,12 @@ export function useStore() {
         .map((d) => actions.getDevice(d.id));
     },
 
+    getLayoutThermostat(layout: Layout): SensorDevice | null {
+      const [device] = actions.getLayoutDevicesOfType<SensorDevice>(layout, 'sensor');
+
+      return device || null;
+    },
+
     async refreshDevice(device: Device) {
       const newState = await connector.getState(device);
       await set(deviceKey(device.id), newState);
@@ -152,9 +179,9 @@ export function useStore() {
     async refreshDeviceStates() {
       const lastUpdate = Number(get('lastUpdate'));
       const now = Date.now();
-      const fiveMinutes = 1000 * 60 * 60;
+      const interval = 1000 * 60 * 2;
 
-      if (now - lastUpdate < fiveMinutes) {
+      if (now - lastUpdate < interval) {
         return;
       }
 

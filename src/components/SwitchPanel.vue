@@ -21,7 +21,7 @@
     <div class="device-group__body toggle-group">
       <button
         v-for="device in switches"
-        @click="store.toggleSwitch(device.id)"
+        @click="store.toggleDevice(device.id)"
         class="toggle"
         :class="(device.isOn && 'toggle-on') || 'toggle-off'"
       >
