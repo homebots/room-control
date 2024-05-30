@@ -22,8 +22,8 @@
         </button>
       </div>
       <div class="room__switches">
-        <LightPanel :lights="lights" v-if="lights.length"></LightPanel>
-        <SwitchPanel :switches="switches" v-if="switches.length"></SwitchPanel>
+        <LightPanel :lights="lights"></LightPanel>
+        <SwitchPanel :switches="switches"></SwitchPanel>
       </div>
     </div>
   </div>
@@ -42,8 +42,8 @@ interface Props {
 
 const props = defineProps<Props>();
 const emit = defineEmits(['select']);
-const lights = computed(() => store.getLayoutDevicesOfType(props.layout, 'light'));
-const switches = computed(() => store.getLayoutDevicesOfType(props.layout, 'switch'));
+const lights = computed(() => store.state && store.getLayoutDevicesOfType(props.layout, 'light'));
+const switches = computed(() => store.state && store.getLayoutDevicesOfType(props.layout, 'switch'));
 
 function onSelectRoom() {
   emit('select');

@@ -37,24 +37,8 @@ const { user, signIn, getProperty, setProperty } = useAuth();
 const { connect: connectState, current: state } = useState();
 const { connect: connectTuya } = useConnector();
 
-const switches = computed(() =>
-  (state.value.devices || [])
-    .filter((d) => d.type === 'switch')
-    .map((d) => ({
-      ...d,
-      ...store.getDevice(d.id),
-    })),
-);
-
-const lights = computed(() =>
-  (state.value.devices || [])
-    .filter((d) => d.type === 'light')
-    .map((d) => ({
-      ...d,
-      ...store.getDevice(d.id),
-    })),
-);
-
+const switches = computed(() => store.getAllOfType('switch'));
+const lights = computed(() => store.getAllOfType('light'));
 const layouts = computed(() => state.value.layouts);
 const currentRoom = ref<Layout | null>(null);
 

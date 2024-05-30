@@ -21,6 +21,9 @@ const deviceKey = (id) => ('device:' + id) as any;
 
 export function useStore() {
   const actions = {
+    get state() {
+      return current.value;
+    },
     connect(o) {
       Object.assign(credentials, o);
       (window as any).state = {
